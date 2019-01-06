@@ -1,8 +1,10 @@
 package pl.baratspol.springreact.services;
 
 import org.springframework.stereotype.Service;
+import pl.baratspol.springreact.domain.Backlog;
 import pl.baratspol.springreact.domain.Project;
 import pl.baratspol.springreact.exceptions.ProjectIdException;
+import pl.baratspol.springreact.repositories.BacklogRepository;
 import pl.baratspol.springreact.repositories.ProjectRepository;
 
 /**
@@ -12,14 +14,27 @@ import pl.baratspol.springreact.repositories.ProjectRepository;
 public class ProjectService {
 
     private ProjectRepository projectRepository;
+    private BacklogRepository backlogRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository) {
         this.projectRepository = projectRepository;
+        this.backlogRepository = backlogRepository;
     }
 
     public Project saveOrUpdateProject(Project project) {
         try {
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            if (project.getId() == null) {
+                Backlog backlog = new Backlog();
+                project.setBacklog(backlog);
+                backlog.setProject(project);
+                backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            }
+
+            if (project.getId() != null) {
+                project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
+            }
+
             return projectRepository.save(project);
         } catch (Exception e) {
             throw new ProjectIdException("Project Id: " + project.getProjectIdentifier() + " already exists");
