@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.baratspol.springreact.domain.Project;
 import pl.baratspol.springreact.services.MapValidationErrorService;
 import pl.baratspol.springreact.services.ProjectService;
@@ -39,5 +36,24 @@ public class ProjectController {
         }
         projectService.saveOrUpdateProject(project);
         return new ResponseEntity<>(project, HttpStatus.CREATED);
+    }
+
+    @GetMapping("{projectId}")
+    public ResponseEntity<?> findProjectByIdentifier(@PathVariable String projectId) {
+        Project project = projectService.findByProjectIdentifier(projectId);
+
+        return new ResponseEntity<>(project, HttpStatus.OK);
+    }
+
+    @GetMapping("all")
+    public Iterable<Project> getPAllProjects() {
+        return projectService.findAllProjects();
+    }
+
+    @DeleteMapping("{projectId}")
+    public ResponseEntity<?> deleteProject(@PathVariable String projectId) {
+        projectService.deleteProjectByIdentifier(projectId);
+
+        return new ResponseEntity<>("Project '" + projectId + "' deleted.", HttpStatus.OK);
     }
 }
