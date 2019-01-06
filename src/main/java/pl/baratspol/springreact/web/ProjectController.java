@@ -4,17 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.baratspol.springreact.domain.Project;
+import pl.baratspol.springreact.services.MapValidationErrorService;
 import pl.baratspol.springreact.services.ProjectService;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Bartosz Piatek on 06/01/2019
@@ -24,24 +22,21 @@ import java.util.Map;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final MapValidationErrorService validationErrorService;
 
     @Autowired
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, MapValidationErrorService validationErrorService) {
         this.projectService = projectService;
+        this.validationErrorService = validationErrorService;
     }
+
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
-        if(result.hasErrors()) {
-
-            Map<String, String> errorMap = new HashMap<>();
-            for (FieldError error: result.getFieldErrors()) {
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-
-            return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        ResponseEntity<?> errorMap = validationErrorService.mapValidationError(result);
+        if(errorMap != null) {
+            return errorMap;
         }
-
         projectService.saveOrUpdateProject(project);
         return new ResponseEntity<>(project, HttpStatus.CREATED);
     }
