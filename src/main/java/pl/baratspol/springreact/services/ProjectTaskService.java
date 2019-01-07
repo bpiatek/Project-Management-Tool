@@ -7,6 +7,8 @@ import pl.baratspol.springreact.domain.ProjectTask;
 import pl.baratspol.springreact.repositories.BacklogRepository;
 import pl.baratspol.springreact.repositories.ProjectTaskRepository;
 
+import java.util.List;
+
 /**
  * Created by Bartosz Piatek on 07/01/2019
  */
@@ -26,8 +28,7 @@ public class ProjectTaskService {
         Backlog backlog = backlogRepository.findByProjectIdentifier(projectIdentifier);
         projectTask.setBacklog(backlog);
         Integer backlogSequence = backlog.getProjectTaskSequence();
-        backlogSequence++;
-        backlog.setProjectTaskSequence(backlogSequence);
+        backlog.setProjectTaskSequence(++backlogSequence);
         projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
         projectTask.setProjectIdentifier(projectIdentifier);
 
@@ -40,5 +41,9 @@ public class ProjectTaskService {
         }
 
         return taskRepository.save(projectTask);
+    }
+
+    public Iterable<ProjectTask> findBacklogByProjectIdentifier(String projectIdentifier) {
+        return taskRepository.findByProjectIdentifierOrderByPriority(projectIdentifier);
     }
 }

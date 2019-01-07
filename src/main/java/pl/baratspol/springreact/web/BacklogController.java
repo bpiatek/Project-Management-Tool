@@ -10,6 +10,7 @@ import pl.baratspol.springreact.services.MapValidationErrorService;
 import pl.baratspol.springreact.services.ProjectTaskService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * Created by Bartosz Piatek on 07/01/2019
@@ -40,5 +41,10 @@ public class BacklogController {
         ProjectTask projectTask1 = taskService.addProjectTask(projectIdentifier, projectTask);
 
         return new ResponseEntity<>(projectTask1, HttpStatus.CREATED);
+    }
+
+    @GetMapping("{projectIdentifier}")
+    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String projectIdentifier) {
+        return taskService.findBacklogByProjectIdentifier(projectIdentifier);
     }
 }
