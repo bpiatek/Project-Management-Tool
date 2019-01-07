@@ -10,7 +10,6 @@ import pl.baratspol.springreact.services.MapValidationErrorService;
 import pl.baratspol.springreact.services.ProjectTaskService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * Created by Bartosz Piatek on 07/01/2019
