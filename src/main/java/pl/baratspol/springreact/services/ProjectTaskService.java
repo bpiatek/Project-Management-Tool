@@ -1,5 +1,6 @@
 package pl.baratspol.springreact.services;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.baratspol.springreact.domain.Backlog;
@@ -14,18 +15,12 @@ import pl.baratspol.springreact.repositories.ProjectTaskRepository;
  * Created by Bartosz Piatek on 07/01/2019
  */
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ProjectTaskService {
 
     private BacklogRepository backlogRepository;
     private ProjectTaskRepository taskRepository;
     private ProjectRepository projectRepository;
-
-    @Autowired
-    public ProjectTaskService(BacklogRepository backlogRepository, ProjectTaskRepository taskRepository, ProjectRepository projectRepository) {
-        this.backlogRepository = backlogRepository;
-        this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-    }
 
     public ProjectTask addProjectTask(String projectIdentifier, ProjectTask projectTask) {
         try {
@@ -36,14 +31,13 @@ public class ProjectTaskService {
             projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
             projectTask.setProjectIdentifier(projectIdentifier);
 
-            if ( projectTask.getPriority() == null) {
+            if (projectTask.getPriority() == null) {
                 projectTask.setPriority(3);
             }
 
             if (("".equals(projectTask.getStatus())) || projectTask.getStatus() == null) {
                 projectTask.setStatus("TO_DO");
             }
-
             return taskRepository.save(projectTask);
         } catch (Exception ex) {
             throw new ProjectNotFoundException("Project not found");
@@ -56,5 +50,34 @@ public class ProjectTaskService {
             throw new ProjectNotFoundException("Project '" + projectIdentifier + "' does not exist");
         }
         return taskRepository.findByProjectIdentifierOrderByPriority(projectIdentifier);
+    }
+
+    public ProjectTask findByProjectSequence(String projectSequence, String projectTaskSequence) {
+        Backlog backlog = backlogRepository.findByProjectIdentifier(projectSequence);
+        if (backlog == null) {
+            throw new ProjectNotFoundException("Project '" + projectSequence + "' does not exist");
+        }
+
+        ProjectTask projectTask = taskRepository.findByProjectSequence(projectTaskSequence);
+        if (projectTask == null) {
+            throw new ProjectNotFoundException("Project task '" + projectTaskSequence + "' not found");
+        }
+
+        if (!projectTask.getProjectIdentifier().equals(projectSequence)) {
+            throw new ProjectNotFoundException("Project task '" + projectTaskSequence
+                    + "' does not exist in project '" + projectSequence);
+        }
+
+        return projectTask;
+    }
+
+    public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String projectSequence, String projectTaskSequence) {
+        findByProjectSequence(projectSequence, projectTaskSequence);
+        return taskRepository.save(updatedTask);
+    }
+
+    public void deleteProjectTaskByProjectSequence(String projectSequence, String projectTaskSequence) {
+        ProjectTask projectTask = findByProjectSequence(projectSequence, projectTaskSequence);
+        taskRepository.delete(projectTask);
     }
 }

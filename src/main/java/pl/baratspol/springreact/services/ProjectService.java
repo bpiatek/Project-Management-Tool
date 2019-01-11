@@ -1,5 +1,7 @@
 package pl.baratspol.springreact.services;
 
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.baratspol.springreact.domain.Backlog;
 import pl.baratspol.springreact.domain.Project;
@@ -11,15 +13,11 @@ import pl.baratspol.springreact.repositories.ProjectRepository;
  * Created by Bartosz Piatek on 06/01/2019
  */
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ProjectService {
 
     private ProjectRepository projectRepository;
     private BacklogRepository backlogRepository;
-
-    public ProjectService(ProjectRepository projectRepository, BacklogRepository backlogRepository) {
-        this.projectRepository = projectRepository;
-        this.backlogRepository = backlogRepository;
-    }
 
     public Project saveOrUpdateProject(Project project) {
         try {

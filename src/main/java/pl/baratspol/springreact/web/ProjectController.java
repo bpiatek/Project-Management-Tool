@@ -1,5 +1,6 @@
 package pl.baratspol.springreact.web;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,17 +17,11 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/api/project")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ProjectController {
 
     private final ProjectService projectService;
     private final MapValidationErrorService validationErrorService;
-
-    @Autowired
-    public ProjectController(ProjectService projectService, MapValidationErrorService validationErrorService) {
-        this.projectService = projectService;
-        this.validationErrorService = validationErrorService;
-    }
-
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
