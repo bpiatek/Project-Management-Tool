@@ -25,3 +25,6 @@ mvnw
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### Nodejs ##
+/react-ui/node_modules
