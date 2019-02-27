@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Link from "react-router-dom/es/Link";
 
 class Header extends Component {
     render() {
@@ -6,9 +7,9 @@ class Header extends Component {
             <div>
                 <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
                     <div className="container">
-                        <a className="navbar-brand" href="Dashboard.html">
+                        <Link  to={`/`} className="navbar-brand">
                             JIRA Like Tool by Bartosz Piątek
-                        </a>
+                        </Link>
                         <button className="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#mobile-nav">
                             <span className="navbar-toggler-icon"/>

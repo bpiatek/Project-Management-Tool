@@ -31,11 +31,12 @@ public class ProjectTaskService {
             projectTask.setProjectSequence(projectIdentifier + "-" + backlogSequence);
             projectTask.setProjectIdentifier(projectIdentifier);
 
-            if (projectTask.getPriority() == null) {
+
+            if (projectTask.getPriority() == 0 || projectTask.getPriority() == null) {
                 projectTask.setPriority(3);
             }
 
-            if (("".equals(projectTask.getStatus())) || projectTask.getStatus() == null) {
+            if ((projectTask.getStatus().equals("")) || projectTask.getStatus() == null) {
                 projectTask.setStatus("TO_DO");
             }
             return taskRepository.save(projectTask);
@@ -73,6 +74,13 @@ public class ProjectTaskService {
 
     public ProjectTask updateByProjectSequence(ProjectTask updatedTask, String projectSequence, String projectTaskSequence) {
         findByProjectSequence(projectSequence, projectTaskSequence);
+        if (updatedTask.getPriority() == 0 || updatedTask.getPriority() == null) {
+            updatedTask.setPriority(3);
+        }
+
+        if ((updatedTask.getStatus().equals("")) || updatedTask.getStatus() == null) {
+            updatedTask.setStatus("TO_DO");
+        }
         return taskRepository.save(updatedTask);
     }
 
