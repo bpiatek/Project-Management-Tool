@@ -15,7 +15,7 @@ class UpdateProject extends Component {
             "description": "",
             "startDate": "",
             "endDate": "",
-            "errors":{}
+            "errors": {}
         };
 
         this.onChange = this.onChange.bind(this);
@@ -23,7 +23,7 @@ class UpdateProject extends Component {
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
-        if(nextProps.errors) {
+        if (nextProps.errors) {
             this.setState({errors: nextProps.errors});
         }
         const {
@@ -36,13 +36,13 @@ class UpdateProject extends Component {
         } = nextProps.project;
 
         this.setState({
-            id,
-            projectName,
-            projectIdentifier,
-            description,
-            startDate,
-            endDate
-        });
+                          id,
+                          projectName,
+                          projectIdentifier,
+                          description,
+                          startDate,
+                          endDate
+                      });
     }
 
     componentDidMount() {
@@ -81,7 +81,7 @@ class UpdateProject extends Component {
                                 <div className="form-group">
                                     <input type="text"
                                            className={classnames("form-control form-control-lg", {
-                                             "is-invalid": errors.projectName
+                                               "is-invalid": errors.projectName
                                            })}
                                            name="projectName"
                                            placeholder="Project Name"
@@ -106,11 +106,11 @@ class UpdateProject extends Component {
                                 <div className="form-group">
                                     <textarea className={classnames("form-control form-control-lg", {
                                         "is-invalid": errors.description
-                                        })}
-                                          name="description"
-                                          placeholder="Project Description"
-                                          value={this.state.description}
-                                          onChange={this.onChange}
+                                    })}
+                                              name="description"
+                                              placeholder="Project Description"
+                                              value={this.state.description}
+                                              onChange={this.onChange}
                                     >
                                     </textarea>
                                     {errors.description && (
@@ -163,4 +163,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {getProject, createProject}
-    )(UpdateProject);
+)(UpdateProject);

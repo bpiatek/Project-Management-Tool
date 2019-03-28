@@ -7,9 +7,10 @@ class Header extends Component {
             <div>
                 <nav className="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
                     <div className="container">
-                        <Link  to={`/`} className="navbar-brand">
+                        <Link to={`/`} className="navbar-brand">
                             JIRA Like Tool by Bartosz Piątek
                         </Link>
+
                         <button className="navbar-toggler" type="button" data-toggle="collapse"
                                 data-target="#mobile-nav">
                             <span className="navbar-toggler-icon"/>
@@ -18,22 +19,9 @@ class Header extends Component {
                         <div className="collapse navbar-collapse" id="mobile-nav">
                             <ul className="navbar-nav mr-auto">
                                 <li className="nav-item">
-                                    <a className="nav-link" href="/dashboard">
+                                    <Link to={`/dashboard`} className="nav-link">
                                         Dashboard
-                                    </a>
-                                </li>
-                            </ul>
-
-                            <ul className="navbar-nav ml-auto">
-                                <li className="nav-item">
-                                    <a className="nav-link " href="register.html">
-                                        Sign Up
-                                    </a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="login.html">
-                                        Login
-                                    </a>
+                                    </Link>
                                 </li>
                             </ul>
                         </div>

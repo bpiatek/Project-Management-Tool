@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 class ProjectItem extends Component {
     onDeleteClick = id => {
-      this.props.deleteProject(id);
+        this.props.deleteProject(id);
     };
 
     render() {
@@ -22,7 +22,7 @@ class ProjectItem extends Component {
                             <h3>{project.projectName}</h3>
                             <p>{project.description}</p>
                         </div>
-                        <div className="col-md-4 d-none d-lg-block">
+                        <div className="col-md-4 d-lg-block">
                             <ul className="list-group">
                                 <Link to={`/projectBoard/${project.projectIdentifier}`}>
                                     <li className="list-group-item board">
@@ -35,10 +35,10 @@ class ProjectItem extends Component {
                                     </li>
                                 </Link>
 
-                                    <li className="list-group-item delete" onClick={this.onDeleteClick
-                                        .bind(this, project.projectIdentifier)}>
-                                        <i className="fa fa-minus-circle pr-1"> Delete Project</i>
-                                    </li>
+                                <li className="list-group-item delete" onClick={this.onDeleteClick
+                                    .bind(this, project.projectIdentifier)}>
+                                    <i className="fa fa-minus-circle pr-1"> Delete Project</i>
+                                </li>
 
                             </ul>
                         </div>
@@ -50,7 +50,7 @@ class ProjectItem extends Component {
 }
 
 ProjectItem.propTypes = {
-  deleteProject: PropTypes.func.isRequired
+    deleteProject: PropTypes.func.isRequired
 };
 
 export default connect(null, {deleteProject})(ProjectItem);
